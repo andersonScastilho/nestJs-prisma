@@ -21,7 +21,7 @@ export class UserController {
 
   @Post()
   async create(@Body() { email, name, password }: CreateUserDto) {
-    return await this.userService.create({
+    return this.userService.create({
       email: email,
       name: name,
       password: password,
@@ -30,12 +30,12 @@ export class UserController {
 
   @Get()
   async index() {
-    return { users: [] };
+    return this.userService.index();
   }
 
   @Get(':id')
   async show(@Param('id', ParseIntPipe) id: number) {
-    return { userId: id };
+    return this.userService.show(id);
   }
 
   @Put(':id')
