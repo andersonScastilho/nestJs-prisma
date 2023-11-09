@@ -8,17 +8,20 @@ import {
   Patch,
   Delete,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdadePutUserDto } from './dtos/update-put-user.dto';
 import { UpdadePatchUserDto } from './dtos/update-patch-user.dto';
 import { UserService } from './user.service';
+import { LogInterceptor } from 'src/interceptors/log.interceptor';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseInterceptors(LogInterceptor)
   @Post()
   async create(@Body() { email, name, password, birth_at }: CreateUserDto) {
     return this.userService.create({
