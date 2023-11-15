@@ -17,20 +17,22 @@ import { UpdadePatchUserDto } from './dtos/update-patch-user.dto';
 import { UserService } from './user.service';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import { ParamId } from 'src/decorators/param-id.decorator';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+import { UseGuards } from '@nestjs/common';
+import { RoleGuard } from 'src/guards/role.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@Roles(Role.Admin)
+@UseGuards(AuthGuard, RoleGuard)
+@UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseInterceptors(LogInterceptor)
   @Post()
-  async create(@Body() { email, name, password, birth_at }: CreateUserDto) {
-    return this.userService.create({
-      email: email,
-      name: name,
-      password: password,
-      birth_at: birth_at,
-    });
+  async create(@Body() data: CreateUserDto) {
+    return this.userService.create(data);
   }
 
   @Get()
@@ -38,20 +40,18 @@ export class UserController {
     return this.userService.index();
   }
 
+  @Roles()
   @Get(':id')
-
-  //ParamId() = Decorator personalizado
   async show(@ParamId() id: number) {
-    console.log(id);
     return this.userService.show(id);
   }
 
   @Put(':id')
   async update(
-    @Body() { password, birth_at, email, name }: UpdadePutUserDto,
+    @Body() data: UpdadePutUserDto,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.userService.update(id, { password, birth_at, email, name });
+    return this.userService.update(id, data);
   }
 
   @Patch(':id')
