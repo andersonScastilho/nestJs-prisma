@@ -10,8 +10,8 @@ import { AuthRegisterDto } from './dto/auth-register.dto';
 import { UserService } from 'src/user/user.service';
 @Injectable()
 export class AuthService {
-  private readonly audience: 'users';
-  private readonly issuer: 'login';
+  private readonly audience = 'users';
+  private readonly issuer = 'login';
 
   constructor(
     private readonly jwtService: JwtService,
@@ -19,7 +19,7 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async createToken(user: User) {
+  createToken(user: User) {
     return {
       acessToken: this.jwtService.sign(
         {
@@ -37,7 +37,7 @@ export class AuthService {
     };
   }
 
-  async checarToken(token: string) {
+  checarToken(token: string) {
     try {
       const data = this.jwtService.verify(token, {
         audience: this.audience,
@@ -98,7 +98,7 @@ export class AuthService {
     return this.createToken(user);
   }
 
-  async isValidToken(token: string) {
+  isValidToken(token: string) {
     try {
       this.checarToken(token);
 
