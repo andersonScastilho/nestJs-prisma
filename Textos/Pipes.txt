@@ -1,0 +1,7 @@
+------------------------------------ Pipes ------------------------------------------------------
+Quando for criar um pipe, preciso utilizar o decorator @Injectable()
+e a classe precisa implementar a PipeTransform, com isso a classe precisa utilizar o metodo
+transform.
+
+Os pipes normalmente são utilizado para transformar os dados por ele ou para valida-los
+-----------------------------------------------------------------------------------------------
