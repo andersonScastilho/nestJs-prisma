@@ -40,7 +40,6 @@ export class UserController {
     return this.userService.index();
   }
 
-  @Roles()
   @Get(':id')
   async show(@ParamId() id: number) {
     return this.userService.show(id);
